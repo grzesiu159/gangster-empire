@@ -364,6 +364,35 @@ html,body{height:100%;height:-webkit-fill-available;max-height:100%;background:v
 .empty{text-align:center;padding:34px 16px;color:var(--dim)}
 .empty-i{font-size:2rem;margin-bottom:7px;opacity:.2;display:block}
 
+
+/* ══ EKWIPUNEK ══ */
+.eq-body{display:flex;flex-direction:column;gap:10px}
+.eq-char{background:rgba(14,0,24,.9);border:1px solid var(--b2);border-radius:var(--r);padding:14px;display:grid;grid-template-columns:90px 1fr;gap:12px;align-items:start}
+.eq-mannequin{display:flex;flex-direction:column;align-items:center;gap:6px}
+.eq-av{width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid var(--gold)}
+.eq-slot-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.eq-slot{background:var(--s2);border:1.5px dashed var(--b2);border-radius:var(--r2);padding:8px 6px;text-align:center;cursor:pointer;transition:all .15s;min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.eq-slot.filled{border-color:var(--gold);background:rgba(245,200,66,.06)}
+.eq-slot.filled:hover{border-color:var(--red2)}
+.eq-slot-ico{font-size:1.5rem}
+.eq-slot-nm{font-size:.52rem;font-weight:700;color:var(--dim2);text-transform:uppercase;letter-spacing:.5px}
+.eq-slot-item{font-size:.58rem;color:var(--gold);line-height:1.2;text-align:center}
+.eq-slot-unequip{font-size:.42rem;color:var(--red2);margin-top:1px}
+.eq-stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:4px}
+.eq-stat{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);padding:7px 4px;text-align:center}
+.eq-stat-v{font-size:.9rem;font-weight:900;color:var(--gold)}
+.eq-stat-l{font-size:.5rem;color:var(--dim2)}
+.eq-inv-title{font-size:.72rem;font-weight:800;color:var(--dim2);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+.eq-inv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.eq-item{background:rgba(14,0,24,.9);border:1px solid var(--b1);border-radius:var(--r);padding:9px 6px;text-align:center;cursor:pointer;transition:all .15s;position:relative}
+.eq-item:hover{border-color:var(--gold);transform:translateY(-1px)}
+.eq-item.equipped{border-color:var(--cyan);background:rgba(24,208,176,.07)}
+.eq-item-ico{font-size:1.6rem;margin-bottom:3px}
+.eq-item-nm{font-size:.58rem;font-weight:700;color:var(--w);line-height:1.2}
+.eq-item-stat{font-size:.5rem;color:var(--cyan);margin-top:2px}
+.eq-item-badge{position:absolute;top:3px;right:3px;background:var(--cyan);color:#000;font-size:.42rem;font-weight:900;padding:1px 4px;border-radius:3px}
+.eq-cat-lbl{font-size:.6rem;font-weight:800;color:var(--purple);letter-spacing:.5px;text-transform:uppercase;margin:8px 0 4px;padding-left:2px}
+
 /* ══ SHOP ══ */
 .shop-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .shop-item{background:rgba(14,0,24,.9);border:1px solid var(--b1);border-radius:var(--r);padding:10px 9px;cursor:pointer;transition:all .18s;position:relative;overflow:hidden}
@@ -593,6 +622,12 @@ html,body{height:100%;height:-webkit-fill-available;max-height:100%;background:v
       <div class="shop-grid" id="shop-grid"></div>
     </div>
 
+    <!-- EKWIPUNEK -->
+    <div class="page" id="pg-equip">
+      <div class="stit">🎒 Ekwipunek</div>
+      <div id="equip-content"></div>
+    </div>
+
     <!-- RANKING -->
     <div class="page" id="pg-ranking">
       <div class="stit">🏆 Ranking gangsterów</div>
@@ -632,6 +667,7 @@ html,body{height:100%;height:-webkit-fill-available;max-height:100%;background:v
     <button class="nb"    id="nb-fight"    onclick="goPage('fight')"><span class="nb-i">⚔️</span><span class="nb-l">Walki</span></button>
     <button class="nb"    id="nb-gang"     onclick="goPage('gang')"><span class="nb-i">👥</span><span class="nb-l">Ekipa</span></button>
     <button class="nb"    id="nb-shop"     onclick="goPage('shop')"><span class="nb-i">🛒</span><span class="nb-l">Sklep</span></button>
+    <button class="nb"    id="nb-equip"    onclick="goPage('equip')"><span class="nb-i">🎒</span><span class="nb-l">Ekwipunek</span></button>
     <button class="nb"    id="nb-ranking"  onclick="goPage('ranking')"><span class="nb-i">🏆</span><span class="nb-l">Ranking</span></button>
   </div>
 </div>
@@ -715,13 +751,61 @@ const MISSIONS_DEF=[
 ];
 
 const ENEMIES_DEF=[
-  {id:'e1',name:'Petro "Nóż"',      lvl:3,  atk:15,def:10,img:IMG.thug,    steal:200,  rep:20,  minLvl:1},
-  {id:'e2',name:'Komisarz Malinow.',lvl:5,  atk:25,def:20,img:IMG.cop,     steal:400,  rep:40,  minLvl:2},
-  {id:'e3',name:'Irina "Viper"',    lvl:7,  atk:35,def:28,img:IMG.assassin,steal:700,  rep:70,  minLvl:4},
-  {id:'e4',name:'Rusłan Borysow',   lvl:10, atk:50,def:40,img:IMG.russian, steal:1000, rep:110, minLvl:6},
-  {id:'e5',name:'Don Salvatore',    lvl:15, atk:80,def:65,img:IMG.boss,    steal:2000, rep:200, minLvl:10},
-  {id:'e6',name:'El Jefe',          lvl:18, atk:110,def:88,img:IMG.boss,   steal:4000, rep:350, minLvl:14},
-  {id:'e7',name:'Il Fantasma',      lvl:22, atk:140,def:115,img:IMG.assassin,steal:7000,rep:550,minLvl:18},
+  // ═══ REGION: Stare Miasto (minLvl 1-5) ═══
+  {id:'e_sm1',name:'Drobny Złodziej',     lvl:1, atk:8,  def:5,  img:IMG.thug,     steal:100,  rep:10,  minLvl:1,  region:'sm'},
+  {id:'e_sm2',name:'Uliczny Bójkarz',     lvl:2, atk:12, def:8,  img:IMG.thug,     steal:180,  rep:18,  minLvl:1,  region:'sm'},
+  {id:'e_sm3',name:'Petro "Nóż"',         lvl:3, atk:18, def:12, img:IMG.thug,     steal:280,  rep:28,  minLvl:2,  region:'sm'},
+  {id:'e_sm4',name:'Handlarz Narkotyków', lvl:4, atk:24, def:16, img:IMG.thug,     steal:400,  rep:40,  minLvl:2,  region:'sm'},
+  {id:'e_sm5',name:'Ochroniarz Baru',     lvl:5, atk:30, def:22, img:IMG.cop,      steal:550,  rep:55,  minLvl:3,  region:'sm'},
+  {id:'e_sm6',name:'Komisarz Malinowski', lvl:6, atk:38, def:30, img:IMG.cop,      steal:700,  rep:70,  minLvl:4,  region:'sm'},
+  {id:'e_sm7',name:'Kacper "Strzała"',   lvl:7, atk:45, def:35, img:IMG.cop,      steal:900,  rep:90,  minLvl:4,  region:'sm'},
+  {id:'e_sm8',name:'Sierżant Wiśniewski', lvl:8, atk:54, def:42, img:IMG.cop,      steal:1100, rep:110, minLvl:5,  region:'sm'},
+  {id:'e_sm9',name:'Irina "Viper"',       lvl:9, atk:64, def:50, img:IMG.assassin, steal:1400, rep:140, minLvl:5,  region:'sm'},
+  {id:'e_sm10',name:'Kapitan Kozłowski',  lvl:10,atk:75, def:60, img:IMG.cop,      steal:1800, rep:180, minLvl:6,  region:'sm'},
+  // ═══ REGION: Portowa (minLvl 3-10) ═══
+  {id:'e_po1',name:'Przemytnik Viktor',   lvl:5, atk:32, def:24, img:IMG.russian,  steal:500,  rep:50,  minLvl:3,  region:'po'},
+  {id:'e_po2',name:'Doker Bogdan',        lvl:6, atk:40, def:30, img:IMG.thug,     steal:700,  rep:70,  minLvl:4,  region:'po'},
+  {id:'e_po3',name:'Celnik Kowalczyk',    lvl:7, atk:48, def:38, img:IMG.cop,      steal:900,  rep:90,  minLvl:4,  region:'po'},
+  {id:'e_po4',name:'Rusłan Borysow',      lvl:8, atk:58, def:46, img:IMG.russian,  steal:1100, rep:110, minLvl:5,  region:'po'},
+  {id:'e_po5',name:'Kapitan Makarow',     lvl:9, atk:68, def:54, img:IMG.russian,  steal:1400, rep:140, minLvl:6,  region:'po'},
+  {id:'e_po6',name:'Kontrabandysta Kim',  lvl:10,atk:80, def:64, img:IMG.russian,  steal:1800, rep:180, minLvl:7,  region:'po'},
+  {id:'e_po7',name:'Szef Dokera Dragan',  lvl:11,atk:92, def:74, img:IMG.russian,  steal:2200, rep:220, minLvl:7,  region:'po'},
+  {id:'e_po8',name:'Giennadij "Grizzly"', lvl:12,atk:105,def:85, img:IMG.russian,  steal:2800, rep:280, minLvl:8,  region:'po'},
+  {id:'e_po9',name:'Admirał Chorny',      lvl:13,atk:118,def:96, img:IMG.russian,  steal:3500, rep:350, minLvl:9,  region:'po'},
+  {id:'e_po10',name:'Don Portowy Krew',   lvl:14,atk:132,def:108,img:IMG.boss,     steal:4500, rep:450, minLvl:10, region:'po'},
+  // ═══ REGION: Centrum (minLvl 6-14) ═══
+  {id:'e_ce1',name:'Lobbysta Nowak',      lvl:8, atk:60, def:48, img:IMG.cop,      steal:1200, rep:120, minLvl:6,  region:'ce'},
+  {id:'e_ce2',name:'Korporacyjny Szczur', lvl:9, atk:70, def:56, img:IMG.cop,      steal:1500, rep:150, minLvl:7,  region:'ce'},
+  {id:'e_ce3',name:'Agent CIA Hanks',     lvl:10,atk:82, def:66, img:IMG.assassin, steal:1900, rep:190, minLvl:7,  region:'ce'},
+  {id:'e_ce4',name:'Detektyw Mordarski',  lvl:11,atk:94, def:76, img:IMG.cop,      steal:2300, rep:230, minLvl:8,  region:'ce'},
+  {id:'e_ce5',name:'Szef Ochrony Marco',  lvl:12,atk:108,def:88, img:IMG.boss,     steal:2900, rep:290, minLvl:9,  region:'ce'},
+  {id:'e_ce6',name:'Il Fantasma',         lvl:13,atk:122,def:100,img:IMG.assassin, steal:3600, rep:360, minLvl:10, region:'ce'},
+  {id:'e_ce7',name:'Szef FBI Caldwell',   lvl:14,atk:136,def:112,img:IMG.cop,      steal:4400, rep:440, minLvl:11, region:'ce'},
+  {id:'e_ce8',name:'Mercenario Loco',     lvl:15,atk:152,def:126,img:IMG.assassin, steal:5500, rep:550, minLvl:12, region:'ce'},
+  {id:'e_ce9',name:'Pułkownik Stryjewski',lvl:16,atk:168,def:140,img:IMG.cop,      steal:6800, rep:680, minLvl:13, region:'ce'},
+  {id:'e_ce10',name:'El Jefe Supremo',    lvl:17,atk:186,def:155,img:IMG.boss,     steal:8500, rep:850, minLvl:14, region:'ce'},
+  // ═══ REGION: Przemysłowa (minLvl 8-16) ═══
+  {id:'e_pr1',name:'Ochroniarz Fabryki',  lvl:10,atk:82, def:68, img:IMG.thug,     steal:1800, rep:180, minLvl:8,  region:'pr'},
+  {id:'e_pr2',name:'Szef Związku Rigo',   lvl:11,atk:96, def:80, img:IMG.boss,     steal:2300, rep:230, minLvl:9,  region:'pr'},
+  {id:'e_pr3',name:'Chemik Heinz',        lvl:12,atk:110,def:92, img:IMG.thug,     steal:2900, rep:290, minLvl:9,  region:'pr'},
+  {id:'e_pr4',name:'Inżynier Broni Sorin',lvl:13,atk:125,def:105,img:IMG.russian,  steal:3600, rep:360, minLvl:10, region:'pr'},
+  {id:'e_pr5',name:'Toksyczny Tytus',     lvl:14,atk:140,def:118,img:IMG.thug,     steal:4500, rep:450, minLvl:11, region:'pr'},
+  {id:'e_pr6',name:'Komandos Wolf',       lvl:15,atk:156,def:132,img:IMG.assassin, steal:5600, rep:560, minLvl:12, region:'pr'},
+  {id:'e_pr7',name:'Generał Destrukt',    lvl:16,atk:174,def:147,img:IMG.cop,      steal:7000, rep:700, minLvl:13, region:'pr'},
+  {id:'e_pr8',name:'Mistrz Łańcucha',     lvl:17,atk:192,def:163,img:IMG.thug,     steal:8700, rep:870, minLvl:14, region:'pr'},
+  {id:'e_pr9',name:'Baron Stali Krezus',  lvl:18,atk:212,def:180,img:IMG.boss,     steal:10500,rep:1050,minLvl:15, region:'pr'},
+  {id:'e_pr10',name:'Diabelski Mechanik', lvl:19,atk:234,def:198,img:IMG.boss,     steal:13000,rep:1300,minLvl:16, region:'pr'},
+  // ═══ REGION: Śródmieście / Reszta (minLvl 12+) ═══
+  {id:'e_sr1',name:'Don Salvatore',       lvl:15,atk:160,def:135,img:IMG.boss,     steal:7000, rep:700, minLvl:12, region:'sr'},
+  {id:'e_sr2',name:'Assassino Rex',       lvl:17,atk:188,def:160,img:IMG.assassin, steal:9000, rep:900, minLvl:14, region:'sr'},
+  {id:'e_sr3',name:'Władca Nocy Dante',   lvl:18,atk:208,def:178,img:IMG.boss,     steal:11000,rep:1100,minLvl:15, region:'sr'},
+  {id:'e_sr4',name:'El Diablo',           lvl:19,atk:228,def:196,img:IMG.boss,     steal:13500,rep:1350,minLvl:16, region:'sr'},
+  {id:'e_sr5',name:'Mistrz Zabójstwa Zhu',lvl:20,atk:250,def:216,img:IMG.assassin, steal:16000,rep:1600,minLvl:17, region:'sr'},
+  {id:'e_sr6',name:'Arcyboss Viktor X',   lvl:21,atk:274,def:237,img:IMG.boss,     steal:20000,rep:2000,minLvl:18, region:'sr'},
+  {id:'e_sr7',name:'Il Fantasma Nero',    lvl:22,atk:300,def:260,img:IMG.assassin, steal:25000,rep:2500,minLvl:19, region:'sr'},
+  {id:'e_sr8',name:'Grande Maestro',      lvl:23,atk:328,def:285,img:IMG.boss,     steal:30000,rep:3000,minLvl:20, region:'sr'},
+  {id:'e_sr9',name:'Cesarz Kryminału',    lvl:24,atk:360,def:312,img:IMG.boss,     steal:38000,rep:3800,minLvl:21, region:'sr'},
+  {id:'e_sr10',name:'Don Wszech Donów',   lvl:25,atk:400,def:345,img:IMG.boss,     steal:50000,rep:5000,minLvl:22, region:'sr'},
 ];
 
 const DAILY_R=[
@@ -802,7 +886,7 @@ function launchGame(){
   try{$('s-game').classList.add('on');}catch(e){}
   // Use setTimeout(0) to ensure full script is parsed before renders run
   setTimeout(()=>{
-    const renders=[renderHUD,renderChar,renderCity,renderRegions,renderMissions,renderEnemies,renderBattleHist,renderGang,renderShop];
+    const renders=[renderHUD,renderChar,renderCity,renderRegions,renderMissions,renderEnemies,renderBattleHist,renderGang,renderShop,renderEquip];
     renders.forEach(fn=>{try{fn();}catch(e){console.warn('render error',fn.name,e);}});
     try{startEnergyTick();}catch(e){}
     try{checkAchs();}catch(e){}
@@ -827,6 +911,32 @@ function hydrate(p){
   p._shopItems=loc.shopItems||[];
   p._shopAtk=loc.shopAtk||0;p._shopDef=loc.shopDef||0;p._shopXpb=loc.shopXpb||0;
   p._spAtk=loc.spAtk||0;p._spDef=loc.spDef||0;p._spHp=loc.spHp||0;p._spEn=loc.spEn||0;p._spXp=loc.spXp||0;
+  p._equip=loc.equip||{};
+  // Wczytaj lokalnie zapisany postęp (pieniądze, XP, level etc.)
+  if(loc.money!==undefined)p.money=loc.money;
+  if(loc.respect!==undefined)p.respect=loc.respect;
+  if(loc.experience!==undefined)p.experience=loc.experience;
+  if(loc.level!==undefined)p.level=loc.level;
+  if(loc.energy!==undefined)p.energy=loc.energy;
+  if(loc.max_energy!==undefined)p.max_energy=loc.max_energy;
+  if(loc.health!==undefined)p.health=loc.health;
+  if(loc.max_health!==undefined)p.max_health=loc.max_health;
+  if(loc.attack!==undefined)p.attack=loc.attack;
+  if(loc.defense!==undefined)p.defense=loc.defense;
+  if(loc.wins!==undefined)p.wins=loc.wins;
+  if(loc.losses!==undefined)p.losses=loc.losses;
+  if(loc.missions_completed!==undefined)p.missions_completed=loc.missions_completed;
+  // Przelicz bonusy ekwipunku po wczytaniu
+  if(p._equip && Object.keys(p._equip).length>0){
+    let atk=0,def=0,xpb=0;
+    Object.values(p._equip).forEach(itemId=>{
+      if(!itemId)return;
+      const ITEMS=typeof SHOP_ITEMS!=='undefined'?SHOP_ITEMS:[];
+      const it=ITEMS.find(x=>x.id===itemId);
+      if(it){atk+=(it.atk||0);def+=(it.def||0);xpb+=(it.xpb||0);}
+    });
+    p._shopAtk=atk;p._shopDef=def;p._shopXpb=xpb;
+  }
   return p;
 }
 function persist(){
@@ -836,7 +946,12 @@ function persist(){
     achs:P._achs,daily:P._daily,ownedR:P._ownedR,gangId:P._gangId,
     gangName:P._gangName,gangMembers:P._gangMembers,activity:P._activity.slice(-15),
     gender:P._gender,shopItems:P._shopItems||[],shopAtk:P._shopAtk||0,shopDef:P._shopDef||0,shopXpb:P._shopXpb||0,
-    spAtk:P._spAtk||0,spDef:P._spDef||0,spHp:P._spHp||0,spEn:P._spEn||0,spXp:P._spXp||0
+    spAtk:P._spAtk||0,spDef:P._spDef||0,spHp:P._spHp||0,spEn:P._spEn||0,spXp:P._spXp||0,
+    equip:P._equip||{},
+    // Postęp gracza — zapisywany lokalnie dla szybkości
+    money:P.money,respect:P.respect,experience:P.experience,level:P.level,
+    energy:P.energy,max_energy:P.max_energy,health:P.health,max_health:P.max_health,
+    attack:P.attack,defense:P.defense,wins:P.wins,losses:P.losses,missions_completed:P.missions_completed
   }));
 }
 
@@ -926,6 +1041,7 @@ function goPage(pg){
   if(pg==='profile')renderProfile();
   if(pg==='char')renderChar();
   if(pg==='shop'){_shopCache=null;renderShop();}
+  if(pg==='equip'){renderEquip();}
   if(pg==='gang')renderGang();
 }
 
@@ -1216,48 +1332,77 @@ function abandonRegion(rid){
 // ════════════════════════════════════════════════════════
 // MISSIONS
 // ════════════════════════════════════════════════════════
+// Seed dzienny — misje zmieniają się co dzień ale są stabilne w ciągu dnia
+function getMissionSeed(){
+  const d=new Date();
+  return d.getFullYear()*10000+d.getMonth()*100+d.getDate();
+}
+function seededRand(seed){let x=Math.sin(seed)*10000;return x-Math.floor(x);}
+function getDailyMissions(){
+  const allM=MISSIONS_DEF.flatMap(c=>c.missions);
+  const lv=P.level||1;
+  const actM=P._actM||{};
+  // Misje aktywne zawsze widoczne
+  const active=allM.filter(m=>actM[m.key]);
+  // Dostępne wg poziomu (±3 poziomy)
+  const avail=allM.filter(m=>!actM[m.key]&&m.reqLvl<=lv+2&&m.reqLvl>=Math.max(1,lv-4));
+  // 3 losowe wg seeda dziennego (deterministyczne)
+  const seed=getMissionSeed()+(P.id||'').split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+  const shuffled=[...avail].sort((a,b)=>seededRand(seed+a.key.charCodeAt(0))-seededRand(seed+b.key.charCodeAt(0)));
+  const daily=shuffled.slice(0,Math.max(0,3-active.length));
+  return [...active,...daily];
+}
 function renderMissions(){
   if(!P)return;
   const actM=P._actM||{};
-  let html='';let rdyCnt=0;
-  MISSIONS_DEF.forEach(ch=>{
-    const done=0;
-    html+=`<div class="ch-hdr" onclick="togCh('ch${ch.ch}')">
-      <span class="ch-ico">${ch.chIco}</span>
-      <div class="ch-info"><div class="ch-title">Rozdział ${ch.ch}: ${ch.chName}</div><div class="ch-sub">${ch.missions.length} misji</div></div>
-      <span class="ch-bdg">${done}/${ch.missions.length} ✅</span>
-    </div>
-    <div id="ch${ch.ch}" class="mlist" style="${ch.ch===1?'':'display:none'}">`;
-    ch.missions.forEach(m=>{
-      const act=actM[m.key];
-      const locked=P.level<m.reqLvl;
-      let st='';
-      if(act){
-        const rem=Math.max(0,Math.ceil((act.ends-Date.now())/1000));
-        if(rem>0){
-          const pct=Math.min(100,((m.dur-rem)/m.dur)*100);
-          st=`<div class="mc-timer">⏳ ${fmtT(rem)}</div><div class="mc-prog"><div class="mc-progf" style="width:${pct}%"></div></div>`;
-        }else{rdyCnt++;st=`<button class="mc-btn" onclick="event.stopPropagation();completeMiss('${m.key}')">✅ Odbierz!</button>`;}
-      }else if(locked)st=`<span class="pill r" style="font-size:.58rem">🔒 Lv.${m.reqLvl}</span>`;
-      else st=`<button class="mc-btn" ${Math.floor(P.energy)<m.en?'disabled':''} onclick="event.stopPropagation();startMiss('${m.key}')">▶ ⚡${m.en}</button>`;
-      html+=`<div class="mc ${act?'act':locked?'lk':''}">
-        <div class="mc-body">
-          <img class="mc-eav" src="${m.enemy}" alt="">
-          <div class="mc-info">
-            <div class="mc-nm">${m.name}</div>
-            <div class="mc-ds">${m.desc}</div>
-            <div class="mc-rws">
-              <span class="mc-r g">💰${fmt(m.money)}</span>
-              <span class="mc-r p">✨${m.xp}XP</span>
-              <span class="mc-r r">⭐+${m.rep}</span>
-            </div>
-          </div>
-          <div class="mc-act">${st}</div>
-        </div>
-      </div>`;
-    });
-    html+='</div>';
+  const hasMissionActive=Object.keys(actM).some(k=>{
+    const info=actM[k];return info&&(info.ends-Date.now())>0;
   });
+  let html='';let rdyCnt=0;
+  const missions=getDailyMissions();
+  // Banner ostrzeżenia jeśli misja aktywna
+  if(hasMissionActive){
+    html+=`<div style="background:rgba(224,40,72,.12);border:1px solid rgba(224,40,72,.35);border-radius:10px;padding:9px 12px;margin-bottom:10px;font-size:.7rem;color:var(--red2);display:flex;align-items:center;gap:8px">
+      <span style="font-size:1.2rem">⚔️</span>
+      <div><div style="font-weight:800">Misja w toku — ataki zablokowane!</div><div style="color:var(--dim2);margin-top:2px">Nie możesz atakować podczas wykonywania misji. Poczekaj na zakończenie.</div></div>
+    </div>`;
+  }
+  // Odświeżenie jutro
+  const now=new Date();const tom=new Date(now);tom.setDate(tom.getDate()+1);tom.setHours(0,0,0,0);
+  const diffH=Math.ceil((tom-now)/3600000);
+  html+=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+    <div style="font-size:.62rem;color:var(--dim2)">🎲 Losowe misje na dziś · nowe za ~${diffH}h</div>
+    <div style="font-size:.62rem;color:var(--gold)">${missions.length}/3 dostępnych</div>
+  </div>`;
+  missions.forEach(m=>{
+    const act=actM[m.key];
+    const locked=P.level<m.reqLvl;
+    let st='';
+    if(act){
+      const rem=Math.max(0,Math.ceil((act.ends-Date.now())/1000));
+      if(rem>0){
+        const pct=Math.min(100,((m.dur-rem)/m.dur)*100);
+        st=`<div class="mc-timer">⏳ ${fmtT(rem)}</div><div class="mc-prog"><div class="mc-progf" style="width:${pct}%"></div></div>`;
+      }else{rdyCnt++;st=`<button class="mc-btn" onclick="event.stopPropagation();completeMiss('${m.key}')">✅ Odbierz!</button>`;}
+    }else if(locked)st=`<span class="pill r" style="font-size:.58rem">🔒 Lv.${m.reqLvl}</span>`;
+    else st=`<button class="mc-btn" ${Math.floor(P.energy)<m.en?'disabled':''} onclick="event.stopPropagation();startMiss('${m.key}')">▶ ⚡${m.en}</button>`;
+    html+=`<div class="mc ${act?'act':locked?'lk':''}">
+      <div class="mc-body">
+        <img class="mc-eav" src="${m.enemy}" alt="">
+        <div class="mc-info">
+          <div class="mc-nm">${m.name}</div>
+          <div class="mc-ds">${m.desc}</div>
+          <div class="mc-rws">
+            <span class="mc-r g">💰${fmt(m.money)}</span>
+            <span class="mc-r p">✨${m.xp}XP</span>
+            <span class="mc-r r">⭐+${m.rep}</span>
+          </div>
+        </div>
+        <div class="mc-act">${st}</div>
+      </div>
+    </div>`;
+  });
+  if(missions.length===0){html+=`<div class="empty"><span class="empty-i">📋</span><div>Brak dostępnych misji na Twoim poziomie.</div></div>`;}
   $('miss-list').innerHTML=html;
   Object.entries(actM).forEach(([key,info])=>{
     if(missTimers[key])clearInterval(missTimers[key]);
@@ -1315,20 +1460,36 @@ function openMissResult(m,ok){
 // FIGHT
 // ════════════════════════════════════════════════════════
 function renderEnemies(){
-  $('enemy-g').innerHTML=ENEMIES_DEF.map(e=>`
-    <div class="ec" onclick="openFight('${e.id}')">
-      <img src="${e.img}" alt="">
-      <div class="ec-info">
-        <div class="ec-nm">${e.name}</div>
-        <div class="ec-lv">🔴 Lv.${e.lvl} ${e.minLvl>1?'· min Lv.'+e.minLvl:''}</div>
-        <div class="ec-ss">
-          <span class="ec-s">⚔️${e.atk}</span>
-          <span class="ec-s">🛡️${e.def}</span>
-          <span class="ec-s">💰${fmt(e.steal)}</span>
+  if(!P)return;
+  const regionNames={sm:'🏚️ Stare Miasto',po:'⚓ Portowa',ce:'🏢 Centrum',pr:'🏭 Przemysłowa',sr:'🌃 Śródmieście'};
+  const regions=['sm','po','ce','pr','sr'];
+  let html='';
+  regions.forEach(rid=>{
+    const enemies=ENEMIES_DEF.filter(e=>e.region===rid);
+    const regionMinLvl=Math.min(...enemies.map(e=>e.minLvl));
+    const regionLocked=P.level<regionMinLvl;
+    html+=`<div class="stit" style="margin-top:12px">${regionNames[rid]||rid} ${regionLocked?'<span class="pill r" style="font-size:.5rem">🔒 Lv.'+regionMinLvl+'</span>':''}</div>`;
+    if(regionLocked){html+=`<div style="text-align:center;padding:10px;color:var(--dim);font-size:.7rem">Odblokuj na poziomie ${regionMinLvl}</div>`;return;}
+    html+='<div class="eg">';
+    enemies.forEach(e=>{
+      const locked=P.level<e.minLvl;
+      html+=`<div class="ec" onclick="${locked?'':'openFight(\'' + e.id + '\')'}" style="${locked?'opacity:.35;cursor:not-allowed':''}">
+        <img src="${e.img}" alt="">
+        <div class="ec-info">
+          <div class="ec-nm">${e.name}</div>
+          <div class="ec-lv">🔴 Lv.${e.lvl} ${locked?'· 🔒 Lv.'+e.minLvl:''}</div>
+          <div class="ec-ss">
+            <span class="ec-s">⚔️${e.atk}</span>
+            <span class="ec-s">🛡️${e.def}</span>
+            <span class="ec-s">💰${fmt(e.steal)}</span>
+          </div>
+          ${locked?'<span class="pill r" style="font-size:.54rem;margin-top:4px">🔒 Lv.'+e.minLvl+'</span>':'<button class="fight-btn">⚔️ Atakuj</button>'}
         </div>
-        <button class="fight-btn" ${P.level<e.minLvl?'disabled':''}>⚔️ ${P.level<e.minLvl?'🔒 Lv.'+e.minLvl:'Atakuj'}</button>
-      </div>
-    </div>`).join('');
+      </div>`;
+    });
+    html+='</div>';
+  });
+  $('enemy-g').innerHTML=html;
 }
 function renderBattleHist(){
   const bh=P?._bh||[];
@@ -1345,6 +1506,20 @@ function getMyDef(){return(P.defense||10)+(P._blds?.gym||0)*6+(P.level||1)*2+(P.
 function openFight(eid){
   const e=ENEMIES_DEF.find(x=>x.id===eid);if(!e)return;
   if(P.level<e.minLvl){toast(`Potrzebujesz Lv.${e.minLvl}!`,'er');return;}
+  // Blokada ataków gdy misja aktywna
+  const actM=P._actM||{};
+  const hasMissionActive=Object.keys(actM).some(k=>{const info=actM[k];return info&&(info.ends-Date.now())>0;});
+  if(hasMissionActive){
+    toast('⚔️ Nie możesz atakować podczas misji!','er');
+    openMdl(`<div class="mh"><h3>🚫 Ataki zablokowane</h3><button class="mcl" onclick="closeMdl()">✕</button></div>
+    <div class="mbody" style="text-align:center;padding:20px">
+      <div style="font-size:3rem;margin-bottom:10px">⏳</div>
+      <div style="font-size:.9rem;font-weight:900;color:var(--red2);margin-bottom:8px">Misja w toku!</div>
+      <div style="font-size:.75rem;color:var(--dim2)">Poczekaj na zakończenie aktywnej misji zanim zaatakujesz.<br><br>Misje możesz odebrać w zakładce 📋 Misje.</div>
+    </div>
+    <div class="mfoot"><button class="btn btn-p" onclick="closeMdl();goPage('missions')">📋 Idź do Misji</button></div>`);
+    return;
+  }
   const myA=getMyAtk(),myD=getMyDef();
   openMdl(`
     <div class="mh"><h3>⚔️ Wyzwanie</h3><button class="mcl" onclick="closeMdl()">✕</button></div>
@@ -2036,11 +2211,160 @@ function confirmBuy(id){
   P.money-=it.cost;
   if(!P._shopItems)P._shopItems=[];
   P._shopItems.push(id);
-  if(!P._shopAtk)P._shopAtk=0;if(!P._shopDef)P._shopDef=0;if(!P._shopXpb)P._shopXpb=0;
-  P._shopAtk+=(it.atk||0);P._shopDef+=(it.def||0);P._shopXpb+=(it.xpb||0);
+  // Nie aplikuj bonusów tu — dopiero przy zakładaniu
   persist();renderHUD();renderShop();
-  toast(`✅ Kupiono ${it.name}!`,'gd');
+  toast(`✅ Kupiono ${it.ico} ${it.name}! Idź do Ekwipunku i załóż.`,'gd');
   addActivity('🛒',`Kupiono: ${it.ico} ${it.name}`);
+}
+// ════════════════════════════
+// EKWIPUNEK
+// ════════════════════════════
+// Sloty: weapon, armor, gadget, vehicle, special
+const EQUIP_SLOTS=[
+  {id:'weapon', label:'Broń',    ico:'🔫', cats:['🔫 Broń']},
+  {id:'armor',  label:'Zbroja',  ico:'🛡️', cats:['🛡️ Zbroja']},
+  {id:'gadget', label:'Gadżet',  ico:'🎲', cats:['🎲 Gadżety']},
+  {id:'vehicle',label:'Pojazd',  ico:'🚗', cats:['🚗 Auta']},
+  {id:'special',label:'Specjal', ico:'💎', cats:['💎 Specjalne']},
+];
+function recalcEquipStats(){
+  // Przelicz bonusy ze wszystkich założonych przedmiotów
+  const eq=P._equip||{};
+  let atk=0,def=0,xpb=0;
+  Object.values(eq).forEach(itemId=>{
+    if(!itemId)return;
+    const it=SHOP_ITEMS.find(x=>x.id===itemId);
+    if(it){atk+=(it.atk||0);def+=(it.def||0);xpb+=(it.xpb||0);}
+  });
+  P._shopAtk=atk;P._shopDef=def;P._shopXpb=xpb;
+}
+function equipItem(slotId, itemId){
+  if(!P._equip)P._equip={};
+  const it=SHOP_ITEMS.find(x=>x.id===itemId);if(!it)return;
+  // Sprawdź czy item jest w inwentarzu
+  if(!(P._shopItems||[]).includes(itemId)){toast('Nie masz tego przedmiotu!','er');return;}
+  P._equip[slotId]=itemId;
+  recalcEquipStats();
+  persist();renderHUD();renderEquip();
+  toast(`✅ Założono: ${it.ico} ${it.name}`,'gd');
+  closeMdl();
+}
+function unequipItem(slotId){
+  if(!P._equip)P._equip={};
+  const itemId=P._equip[slotId];
+  if(!itemId)return;
+  const it=SHOP_ITEMS.find(x=>x.id===itemId);
+  delete P._equip[slotId];
+  recalcEquipStats();
+  persist();renderHUD();renderEquip();
+  toast(`🗑️ Zdjęto: ${it?it.ico+' '+it.name:'przedmiot'}`,'if');
+}
+function openEquipSlot(slotId){
+  const slot=EQUIP_SLOTS.find(s=>s.id===slotId);if(!slot)return;
+  const owned=P._shopItems||[];
+  const eq=P._equip||{};
+  // Pokaż przedmioty pasujące do slotu które gracz posiada
+  const items=SHOP_ITEMS.filter(it=>slot.cats.includes(it.cat)&&owned.includes(it.id));
+  const currentId=eq[slotId];
+  let html=`<div class="mh"><h3>${slot.ico} Wybierz ${slot.label}</h3><button class="mcl" onclick="closeMdl()">✕</button></div><div class="mbody">`;
+  if(currentId){
+    const cur=SHOP_ITEMS.find(x=>x.id===currentId);
+    html+=`<div style="background:rgba(24,208,176,.08);border:1px solid var(--cyan);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:.72rem">
+      <div style="color:var(--cyan);font-weight:800">Aktualnie założone:</div>
+      <div style="margin-top:4px">${cur?cur.ico+' '+cur.name:'—'}</div>
+      <button class="btn btn-s btn-sm" style="margin-top:6px" onclick="unequipItem('${slotId}')">🗑️ Zdejmij</button>
+    </div>`;
+  }
+  if(items.length===0){
+    html+=`<div style="text-align:center;padding:16px;color:var(--dim);font-size:.75rem">Nie masz żadnej ${slot.label.toLowerCase()} w ekwipunku.<br><br>Kup coś w 🛒 Sklepie!</div>`;
+  }else{
+    html+=`<div class="eq-inv-grid" style="margin-top:4px">`;
+    items.forEach(it=>{
+      const isEq=currentId===it.id;
+      const statStr=[it.atk?'+'+it.atk+'⚔️':'',it.def?'+'+it.def+'🛡️':'',it.hp?'+'+it.hp+'❤️':'',it.xpb?'+'+it.xpb+'%✨':''].filter(Boolean).join(' ');
+      html+=`<div class="eq-item${isEq?' equipped':''}" onclick="${isEq?'':'equipItem(\''+slotId+'\',\''+it.id+'\')'}" style="${isEq?'cursor:default':''}">
+        ${isEq?'<div class="eq-item-badge">✅ Masz</div>':''}
+        <div class="eq-item-ico">${it.ico}</div>
+        <div class="eq-item-nm">${it.name}</div>
+        <div class="eq-item-stat">${statStr}</div>
+        ${!isEq?'<div style="margin-top:4px"><span class="pill b" style="font-size:.48rem">Załóż</span></div>':''}
+      </div>`;
+    });
+    html+='</div>';
+  }
+  html+='</div>';
+  openMdl(html);
+}
+function renderEquip(){
+  if(!P)return;
+  const eq=P._equip||{};
+  const owned=P._shopItems||[];
+  // Statystyki z ekwipunku
+  recalcEquipStats();
+  const eAtk=P._shopAtk||0,eDef=P._shopDef||0,eXpb=P._shopXpb||0;
+  let html=`<div class="eq-body">`;
+  // Postać + sloty
+  html+=`<div class="eq-char">
+    <div class="eq-mannequin">
+      <img class="eq-av" src="${portImg()}" alt="">
+      <div style="font-size:.6rem;color:var(--dim2);margin-top:3px">${P.username}</div>
+      <div style="font-size:.58rem;color:var(--gold)">Lv.${P.level}</div>
+    </div>
+    <div>
+      <div style="font-size:.6rem;color:var(--dim2);margin-bottom:6px;font-weight:700">SLOTY EKWIPUNKU</div>
+      <div class="eq-slot-grid">`;
+  EQUIP_SLOTS.forEach(slot=>{
+    const itemId=eq[slot.id];
+    const item=itemId?SHOP_ITEMS.find(x=>x.id===itemId):null;
+    html+=`<div class="eq-slot ${item?'filled':''}" onclick="openEquipSlot('${slot.id}')">
+      <div class="eq-slot-ico">${item?item.ico:slot.ico}</div>
+      <div class="eq-slot-nm">${slot.label}</div>
+      ${item?`<div class="eq-slot-item">${item.name}</div><div class="eq-slot-unequip">Dotknij by zmienić</div>`:'<div style="font-size:.5rem;color:var(--dim)">Puste</div>'}
+    </div>`;
+  });
+  html+=`</div>
+    </div>
+  </div>`;
+  // Bonusy z ekwipunku
+  html+=`<div class="card">
+    <div style="font-size:.7rem;font-weight:800;color:var(--dim2);margin-bottom:8px">⚡ BONUSY Z EKWIPUNKU</div>
+    <div class="eq-stats-row">
+      <div class="eq-stat"><div class="eq-stat-v">${eAtk>0?'+':''  }${eAtk}</div><div class="eq-stat-l">⚔️ ATK</div></div>
+      <div class="eq-stat"><div class="eq-stat-v">${eDef>0?'+':''}${eDef}</div><div class="eq-stat-l">🛡️ DEF</div></div>
+      <div class="eq-stat"><div class="eq-stat-v">${eXpb>0?'+':''}${eXpb}%</div><div class="eq-stat-l">✨ XP</div></div>
+      <div class="eq-stat"><div class="eq-stat-v">${owned.length}</div><div class="eq-stat-l">🎒 W torbie</div></div>
+    </div>
+  </div>`;
+  // Inwentarz — wszystkie posiadane przedmioty
+  if(owned.length>0){
+    html+=`<div class="card"><div class="eq-inv-title">🎒 Twój Ekwipunek (${owned.length} przedmiotów)</div>`;
+    const cats=[...new Set(SHOP_ITEMS.filter(x=>owned.includes(x.id)).map(x=>x.cat))];
+    cats.forEach(cat=>{
+      const items=SHOP_ITEMS.filter(x=>x.cat===cat&&owned.includes(x.id));
+      html+=`<div class="eq-cat-lbl">${cat}</div><div class="eq-inv-grid">`;
+      items.forEach(it=>{
+        const isEq=Object.values(eq).includes(it.id);
+        const statStr=[it.atk?'+'+it.atk+'⚔️':'',it.def?'+'+it.def+'🛡️':'',it.hp?'+'+it.hp+'❤️':'',it.xpb?'+'+it.xpb+'%✨':''].filter(Boolean).join(' ');
+        const slotForCat=EQUIP_SLOTS.find(s=>s.cats.includes(it.cat));
+        html+=`<div class="eq-item${isEq?' equipped':''}" onclick="${slotForCat&&!isEq?'openEquipSlot(\''+slotForCat.id+'\')':''}">
+          ${isEq?'<div class="eq-item-badge">✅</div>':''}
+          <div class="eq-item-ico">${it.ico}</div>
+          <div class="eq-item-nm">${it.name}</div>
+          <div class="eq-item-stat">${statStr}</div>
+        </div>`;
+      });
+      html+=`</div>`;
+    });
+    html+=`</div>`;
+  }else{
+    html+=`<div class="card" style="text-align:center;padding:20px">
+      <div style="font-size:2.5rem;margin-bottom:8px">🎒</div>
+      <div style="font-size:.8rem;color:var(--dim2)">Ekwipunek pusty.<br>Kup przedmioty w 🛒 Sklepie!</div>
+      <button class="btn btn-p btn-w" style="margin-top:12px" onclick="goPage('shop')">Przejdź do Sklepu</button>
+    </div>`;
+  }
+  html+=`</div>`;
+  $('equip-content').innerHTML=html;
 }
 function refreshShop(){
   if(P.money<5000){toast('Za mało kasy! (5000💰)','er');return;}
