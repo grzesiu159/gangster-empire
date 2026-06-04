@@ -434,6 +434,7 @@ html,body{height:100%;height:-webkit-fill-available;max-height:100%;background:v
 .shop-item.owned{border-color:var(--green);background:rgba(40,192,96,.06)}
 .shop-item.locked{opacity:.3;cursor:not-allowed;filter:grayscale(.7)}
 .shop-ico{font-size:1.8rem;display:block;text-align:center;margin-bottom:5px}
+.shop-ico-img{width:56px;height:56px;object-fit:cover;border-radius:10px;display:block;margin:0 auto 5px;border:1px solid rgba(255,255,255,.12);box-shadow:0 0 10px rgba(160,80,255,.3)}
 .shop-nm{font-size:.7rem;font-weight:700;color:var(--w);text-align:center;line-height:1.2}
 .shop-stats{font-size:.56rem;color:var(--cyan);text-align:center;margin-top:3px;min-height:14px}
 .shop-price{display:flex;justify-content:center;margin-top:5px}
@@ -2372,32 +2373,32 @@ function fmtT(s){
 // ════════════════════════════════════════════════════════
 const SHOP_ITEMS=[
   // Broń
-  {id:'wp1', cat:'🔫 Broń',     name:'Rdzawa Pięść',       ico:'👊', desc:'+2 ATK',           atk:2,  def:0,hp:0,  xpb:0,  cost:200,   reqLvl:1},
-  {id:'wp2', cat:'🔫 Broń',     name:'Nóż Sprężynowy',     ico:'🔪', desc:'+5 ATK',            atk:5,  def:0,hp:0,  xpb:0,  cost:500,   reqLvl:2},
-  {id:'wp3', cat:'🔫 Broń',     name:'Pałka Baseballowa',  ico:'🏏', desc:'+9 ATK',            atk:9,  def:0,hp:0,  xpb:0,  cost:1000,  reqLvl:3},
-  {id:'wp4', cat:'🔫 Broń',     name:'Pistolet 9mm',       ico:'🔫', desc:'+15 ATK',           atk:15, def:0,hp:0,  xpb:0,  cost:2000,  reqLvl:4},
-  {id:'wp5', cat:'🔫 Broń',     name:'Desert Eagle',       ico:'🔫', desc:'+25 ATK',           atk:25, def:0,hp:0,  xpb:0,  cost:4000,  reqLvl:6},
-  {id:'wp6', cat:'🔫 Broń',     name:'AK-47',              ico:'🔫', desc:'+40 ATK',           atk:40, def:0,hp:0,  xpb:0,  cost:8000,  reqLvl:8},
-  {id:'wp7', cat:'🔫 Broń',     name:'Snajper M40',        ico:'🎯', desc:'+60 ATK',           atk:60, def:0,hp:0,  xpb:0,  cost:15000, reqLvl:11},
-  {id:'wp8', cat:'🔫 Broń',     name:'Minigun Chaos',      ico:'💥', desc:'+90 ATK',           atk:90, def:0,hp:0,  xpb:0,  cost:30000, reqLvl:15},
-  {id:'wp9', cat:'🔫 Broń',     name:'RPG-7',              ico:'🚀', desc:'+130 ATK +10 DEF',  atk:130,def:10,hp:0, xpb:0,  cost:60000, reqLvl:18},
-  {id:'wp10',cat:'🔫 Broń',     name:'Railgun Prototyp',   ico:'⚡', desc:'+200 ATK',          atk:200,def:0,hp:0,  xpb:0,  cost:100000,reqLvl:22},
+  {id:'wp1', cat:'🔫 Broń',     name:'Rdzawa Pięść',       ico:'👊', desc:'+2 ATK',           atk:2,  def:0,hp:0,  xpb:0,  cost:200,   reqLvl:1,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/cf1a60d62_generated_image.png'},
+  {id:'wp2', cat:'🔫 Broń',     name:'Nóż Sprężynowy',     ico:'🔪', desc:'+5 ATK',            atk:5,  def:0,hp:0,  xpb:0,  cost:500,   reqLvl:2,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/c809a998f_generated_image.png'},
+  {id:'wp3', cat:'🔫 Broń',     name:'Pałka Baseballowa',  ico:'🏏', desc:'+9 ATK',            atk:9,  def:0,hp:0,  xpb:0,  cost:1000,  reqLvl:3,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/ec0507b9b_generated_image.png'},
+  {id:'wp4', cat:'🔫 Broń',     name:'Pistolet 9mm',       ico:'🔫', desc:'+15 ATK',           atk:15, def:0,hp:0,  xpb:0,  cost:2000,  reqLvl:4,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/0e70bb0ee_generated_image.png'},
+  {id:'wp5', cat:'🔫 Broń',     name:'Desert Eagle',       ico:'🔫', desc:'+25 ATK',           atk:25, def:0,hp:0,  xpb:0,  cost:4000,  reqLvl:6,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/428c7f3bd_generated_image.png'},
+  {id:'wp6', cat:'🔫 Broń',     name:'AK-47',              ico:'🔫', desc:'+40 ATK',           atk:40, def:0,hp:0,  xpb:0,  cost:8000,  reqLvl:8,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/7e97e026c_generated_image.png'},
+  {id:'wp7', cat:'🔫 Broń',     name:'Snajper M40',        ico:'🎯', desc:'+60 ATK',           atk:60, def:0,hp:0,  xpb:0,  cost:15000, reqLvl:11,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/6d25eb44e_generated_image.png'},
+  {id:'wp8', cat:'🔫 Broń',     name:'Minigun Chaos',      ico:'💥', desc:'+90 ATK',           atk:90, def:0,hp:0,  xpb:0,  cost:30000, reqLvl:15,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/43379e800_generated_image.png'},
+  {id:'wp9', cat:'🔫 Broń',     name:'RPG-7',              ico:'🚀', desc:'+130 ATK +10 DEF',  atk:130,def:10,hp:0, xpb:0,  cost:60000, reqLvl:18,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/c437699dc_generated_image.png'},
+  {id:'wp10',cat:'🔫 Broń',     name:'Railgun Prototyp',   ico:'⚡', desc:'+200 ATK',          atk:200,def:0,hp:0,  xpb:0,  cost:100000,reqLvl:22,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/51ede7a19_generated_image.png'},
   // Zbroja
-  {id:'ar1', cat:'🛡️ Zbroja',   name:'Kurtka Skórzana',    ico:'🥋', desc:'+3 DEF',            atk:0,  def:3,hp:20, xpb:0,  cost:300,   reqLvl:1},
-  {id:'ar2', cat:'🛡️ Zbroja',   name:'Kamizelka Kevlar',   ico:'🦺', desc:'+8 DEF +30 HP',     atk:0,  def:8,hp:30, xpb:0,  cost:800,   reqLvl:2},
-  {id:'ar3', cat:'🛡️ Zbroja',   name:'Taktyczne Ochraniacze',ico:'🛡️',desc:'+15 DEF +50 HP',   atk:0,  def:15,hp:50,xpb:0,  cost:1800,  reqLvl:4},
-  {id:'ar4', cat:'🛡️ Zbroja',   name:'Zbroja Wojskowa',    ico:'⚔️', desc:'+25 DEF +80 HP',    atk:0,  def:25,hp:80,xpb:0,  cost:4500,  reqLvl:6},
-  {id:'ar5', cat:'🛡️ Zbroja',   name:'Egzoszkielet',       ico:'🤖', desc:'+40 DEF +120 HP',   atk:5,  def:40,hp:120,xpb:0, cost:10000, reqLvl:9},
-  {id:'ar6', cat:'🛡️ Zbroja',   name:'Zbroja Dragona',     ico:'🐉', desc:'+65 DEF +10 ATK',   atk:10, def:65,hp:0, xpb:0,  cost:25000, reqLvl:13},
-  {id:'ar7', cat:'🛡️ Zbroja',   name:'Nanosuit Mk.II',     ico:'💠', desc:'+100 DEF +200 HP',  atk:15, def:100,hp:200,xpb:0,cost:55000, reqLvl:18},
+  {id:'ar1', cat:'🛡️ Zbroja',   name:'Kurtka Skórzana',    ico:'🥋', desc:'+3 DEF',            atk:0,  def:3,hp:20, xpb:0,  cost:300,   reqLvl:1,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/29c9a92e0_generated_image.png'},
+  {id:'ar2', cat:'🛡️ Zbroja',   name:'Kamizelka Kevlar',   ico:'🦺', desc:'+8 DEF +30 HP',     atk:0,  def:8,hp:30, xpb:0,  cost:800,   reqLvl:2,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/3b5deef3c_generated_image.png'},
+  {id:'ar3', cat:'🛡️ Zbroja',   name:'Taktyczne Ochraniacze',ico:'🛡️',desc:'+15 DEF +50 HP',   atk:0,  def:15,hp:50,xpb:0,  cost:1800,  reqLvl:4,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/75aaafd67_generated_image.png'},
+  {id:'ar4', cat:'🛡️ Zbroja',   name:'Zbroja Wojskowa',    ico:'⚔️', desc:'+25 DEF +80 HP',    atk:0,  def:25,hp:80,xpb:0,  cost:4500,  reqLvl:6,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/cdb9a5868_generated_image.png'},
+  {id:'ar5', cat:'🛡️ Zbroja',   name:'Egzoszkielet',       ico:'🤖', desc:'+40 DEF +120 HP',   atk:5,  def:40,hp:120,xpb:0, cost:10000, reqLvl:9,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/b9517f38c_generated_image.png'},
+  {id:'ar6', cat:'🛡️ Zbroja',   name:'Zbroja Dragona',     ico:'🐉', desc:'+65 DEF +10 ATK',   atk:10, def:65,hp:0, xpb:0,  cost:25000, reqLvl:13,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/a38aaeb3e_generated_image.png'},
+  {id:'ar7', cat:'🛡️ Zbroja',   name:'Nanosuit Mk.II',     ico:'💠', desc:'+100 DEF +200 HP',  atk:15, def:100,hp:200,xpb:0,cost:55000, reqLvl:18,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/9f82ce7bd_generated_image.png'},
   // Gadżety
-  {id:'gd1', cat:'🎲 Gadżety',  name:'Telefon Burner',     ico:'📱', desc:'+5% XP',            atk:0,  def:0,hp:0,  xpb:5,  cost:500,   reqLvl:1},
-  {id:'gd2', cat:'🎲 Gadżety',  name:'Czarny Notatnik',    ico:'📒', desc:'+3 ATK +3 DEF',     atk:3,  def:3,hp:0,  xpb:0,  cost:800,   reqLvl:2},
-  {id:'gd3', cat:'🎲 Gadżety',  name:'Granaty Dymne',      ico:'💨', desc:'+8 DEF +5 ATK',     atk:5,  def:8,hp:0,  xpb:0,  cost:1500,  reqLvl:3},
-  {id:'gd4', cat:'🎲 Gadżety',  name:'Skaner Policyjny',   ico:'📡', desc:'+10% XP +5 DEF',    atk:0,  def:5,hp:0,  xpb:10, cost:2500,  reqLvl:4},
-  {id:'gd5', cat:'🎲 Gadżety',  name:'Dronik Szpiegowski', ico:'🚁', desc:'+12 ATK +8 DEF',    atk:12, def:8,hp:0,  xpb:0,  cost:5000,  reqLvl:6},
-  {id:'gd6', cat:'🎲 Gadżety',  name:'Taktyczne Okulary',  ico:'🕶️', desc:'+20 ATK +15% XP',  atk:20, def:0,hp:0,  xpb:15, cost:9000,  reqLvl:8},
-  {id:'gd7', cat:'🎲 Gadżety',  name:'EMP Granat',         ico:'⚡', desc:'+15 ATK +20 DEF',   atk:15, def:20,hp:0, xpb:0,  cost:18000, reqLvl:11},
+  {id:'gd1', cat:'🎲 Gadżety',  name:'Telefon Burner',     ico:'📱', desc:'+5% XP',            atk:0,  def:0,hp:0,  xpb:5,  cost:500,   reqLvl:1,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/09f5ce998_generated_image.png'},
+  {id:'gd2', cat:'🎲 Gadżety',  name:'Czarny Notatnik',    ico:'📒', desc:'+3 ATK +3 DEF',     atk:3,  def:3,hp:0,  xpb:0,  cost:800,   reqLvl:2,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/366adb500_generated_image.png'},
+  {id:'gd3', cat:'🎲 Gadżety',  name:'Granaty Dymne',      ico:'💨', desc:'+8 DEF +5 ATK',     atk:5,  def:8,hp:0,  xpb:0,  cost:1500,  reqLvl:3,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/36b34df12_generated_image.png'},
+  {id:'gd4', cat:'🎲 Gadżety',  name:'Skaner Policyjny',   ico:'📡', desc:'+10% XP +5 DEF',    atk:0,  def:5,hp:0,  xpb:10, cost:2500,  reqLvl:4,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/206fb20ef_generated_image.png'},
+  {id:'gd5', cat:'🎲 Gadżety',  name:'Dronik Szpiegowski', ico:'🚁', desc:'+12 ATK +8 DEF',    atk:12, def:8,hp:0,  xpb:0,  cost:5000,  reqLvl:6,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/c000d4064_generated_image.png'},
+  {id:'gd6', cat:'🎲 Gadżety',  name:'Taktyczne Okulary',  ico:'🕶️', desc:'+20 ATK +15% XP',  atk:20, def:0,hp:0,  xpb:15, cost:9000,  reqLvl:8,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/c40f88db3_generated_image.png'},
+  {id:'gd7', cat:'🎲 Gadżety',  name:'EMP Granat',         ico:'⚡', desc:'+15 ATK +20 DEF',   atk:15, def:20,hp:0, xpb:0,  cost:18000, reqLvl:11,img:'https://media.base44.com/images/public/6a19d725c418a9c059f908d0/b31cc5927_generated_image.png'},
   {id:'gd8', cat:'🎲 Gadżety',  name:'Cyber Implant',      ico:'🧠', desc:'+25% XP +25 ATK',   atk:25, def:0,hp:0,  xpb:25, cost:35000, reqLvl:15},
   // Auta
   {id:'ca1', cat:'🚗 Auta',     name:'Zdezelowany Fiat',   ico:'🚗', desc:'+3 DEF +5 HP',      atk:0,  def:3,hp:5,  xpb:0,  cost:600,   reqLvl:1},
@@ -2435,7 +2436,7 @@ function renderShop(){
     const cls='shop-item'+(isOwned?' owned':locked?' locked':'');
     const onclick=isOwned||locked?'':'buyItem(\''+it.id+'\')';
     html+='<div class="'+cls+'" onclick="'+onclick+'">';
-    html+='<span class="shop-ico">'+it.ico+'</span>';
+    html+=(it.img?'<img class="shop-ico-img" src="'+it.img+'" alt="'+it.name+'">':'<span class="shop-ico">'+it.ico+'</span>');
     html+='<div class="shop-nm">'+it.name+'</div>';
     html+='<div class="shop-stats">'+statStr+'</div>';
     html+='<div class="shop-price"><span class="pill g">💰 '+fmt(it.cost)+'</span></div>';
@@ -2453,7 +2454,7 @@ function buyItem(id){
   openMdl(`
     <div class="mh"><h3>${it.ico} ${it.name}</h3><button class="mcl" onclick="closeMdl()">✕</button></div>
     <div class="mbody" style="text-align:center">
-      <div style="font-size:4rem;margin:10px 0">${it.ico}</div>
+      <div style="font-size:4rem;margin:10px 0">${it.img?'<img style="width:72px;height:72px;object-fit:cover;border-radius:14px;border:2px solid rgba(160,80,255,.5);box-shadow:0 0 20px rgba(160,80,255,.4)" src="'+it.img+'" alt="">'  :it.ico}</div>
       <div style="font-size:.8rem;color:var(--dim2);margin-bottom:12px">${it.cat}</div>
       <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:14px">
         ${it.atk?`<span class="pill r">⚔️ +${it.atk} ATK</span>`:''}
@@ -2549,7 +2550,7 @@ function openEquipSlot(slotId){
       const statStr=[it.atk?'+'+it.atk+'⚔️':'',it.def?'+'+it.def+'🛡️':'',it.hp?'+'+it.hp+'❤️':'',it.xpb?'+'+it.xpb+'%✨':''].filter(Boolean).join(' ');
       html+=`<div class="eq-item${isEq?' equipped':''}" onclick="${isEq?'':'equipItem(\''+slotId+'\',\''+it.id+'\')'}" style="${isEq?'cursor:default':''}">
         ${isEq?'<div class="eq-item-badge">✅ Masz</div>':''}
-        <div class="eq-item-ico">${it.ico}</div>
+        <div class="eq-item-ico">${it.img?'<img style="width:36px;height:36px;object-fit:cover;border-radius:6px" src="'+it.img+'" alt="">':it.ico}</div>
         <div class="eq-item-nm">${it.name}</div>
         <div class="eq-item-stat">${statStr}</div>
         ${!isEq?'<div style="margin-top:4px"><span class="pill b" style="font-size:.48rem">Załóż</span></div>':''}
@@ -2582,7 +2583,7 @@ function renderEquip(){
     const itemId=eq[slot.id];
     const item=itemId?SHOP_ITEMS.find(x=>x.id===itemId):null;
     html+=`<div class="eq-slot ${item?'filled':''}" onclick="openEquipSlot('${slot.id}')">
-      <div class="eq-slot-ico">${item?item.ico:slot.ico}</div>
+      <div class="eq-slot-ico">${item?(item.img?'<img style="width:28px;height:28px;object-fit:cover;border-radius:5px" src="'+item.img+'" alt="">'  :item.ico):slot.ico}</div>
       <div class="eq-slot-nm">${slot.label}</div>
       ${item?`<div class="eq-slot-item">${item.name}</div><div class="eq-slot-unequip">Dotknij by zmienić</div>`:'<div style="font-size:.5rem;color:var(--dim)">Puste</div>'}
     </div>`;
@@ -2613,7 +2614,7 @@ function renderEquip(){
         const slotForCat=EQUIP_SLOTS.find(s=>s.cats.includes(it.cat));
         html+=`<div class="eq-item${isEq?' equipped':''}" onclick="${slotForCat&&!isEq?'openEquipSlot(\''+slotForCat.id+'\')':''}">
           ${isEq?'<div class="eq-item-badge">✅</div>':''}
-          <div class="eq-item-ico">${it.ico}</div>
+          <div class="eq-item-ico">${it.img?'<img style="width:36px;height:36px;object-fit:cover;border-radius:6px" src="'+it.img+'" alt="">':it.ico}</div>
           <div class="eq-item-nm">${it.name}</div>
           <div class="eq-item-stat">${statStr}</div>
         </div>`;
