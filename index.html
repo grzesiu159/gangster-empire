@@ -504,7 +504,7 @@ html,body{height:100%;height:-webkit-fill-available;max-height:100%;background:v
 
 <!-- AUTH -->
 <div class="screen" id="s-auth">
-  <div class="auth-logo"><h1>GANGSTER<br>EMPIRE</h1><p>Rule the streets · Own the city</p></div>
+  <div class="auth-logo"><h1>GANGSTER<br>EMPIRE</h1><p>Rule the streets · Own the city</p><div id="srv-status" style="font-size:.55rem;margin-top:5px;color:#888">⏳ łączę z serwerem...</div></div>
   <div class="auth-box">
     <div class="auth-tabs">
       <div class="atab on" id="at-l" onclick="swAuth('l')">Zaloguj się</div>
@@ -921,6 +921,19 @@ function showAuth(){
     try{$('s-load').classList.remove('on');}catch(e){}
     try{$('s-auth').classList.add('on');}catch(e){}
   });
+  // Ping serwer w tle - pokaż status
+  setTimeout(async()=>{
+    try{
+      const r=await fetchTo(AUTH_URL,{action:'ping'},8000);
+      if(r&&(r.ok||r.error==='Unknown action')){
+        try{$('srv-status').textContent='🟢 Serwer online';$('srv-status').style.color='#4caf50';}catch(e){}
+      }else{
+        try{$('srv-status').textContent='🔴 Serwer niedostępny';$('srv-status').style.color='#f44336';}catch(e){}
+      }
+    }catch(e){
+      try{$('srv-status').textContent='🔴 Brak połączenia';$('srv-status').style.color='#f44336';}catch(ex){}
+    }
+  },500);
 }
 function launchGame(){
   try{$('s-load').classList.remove('on');}catch(e){}
@@ -1008,9 +1021,25 @@ async function fetchTo(url,body,ms=25000){
   const ctrl=new AbortController();
   const t=setTimeout(()=>ctrl.abort(),ms);
   try{
-    const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','x-base44-app-id':APP_ID},body:JSON.stringify(body),signal:ctrl.signal});
-    clearTimeout(t);return r.json();
-  }catch(e){clearTimeout(t);return{ok:false,error:e.name==='AbortError'?'Timeout':'Brak połączenia'};}
+    const r=await fetch(url,{
+      method:'POST',
+      mode:'cors',
+      credentials:'omit',
+      headers:{'Content-Type':'application/json','x-base44-app-id':APP_ID},
+      body:JSON.stringify(body),
+      signal:ctrl.signal
+    });
+    clearTimeout(t);
+    if(!r.ok&&r.status>=500){return{ok:false,error:'Błąd serwera ('+r.status+')'};}
+    return r.json();
+  }catch(e){
+    clearTimeout(t);
+    const isAbort=e.name==='AbortError';
+    const isNet=!isAbort;
+    const msg=isAbort?'Przekroczono czas ('+Math.round(ms/1000)+'s) - sprawdź internet':
+              isNet?'Brak połączenia z serwerem':'Błąd: '+e.message;
+    return{ok:false,error:msg};
+  }
 }
 const callAuth=(action,data)=>fetchTo(AUTH_URL,{action,data:data||{}});
 const callGame=(action,data)=>fetchTo(GAME_URL,{action,data:{...(data||{}),player_id:P?.id}});
@@ -1038,11 +1067,12 @@ async function doLogin(){
       localStorage.setItem('ge_player_cache',JSON.stringify(r.player));
       P=hydrate(r.player);launchGame();
     }else{
-      $('aerr-l').textContent=(r&&r.error)||'Błąd logowania';
+      const errMsg=(r&&r.error)||'Błąd logowania';
+      $('aerr-l').textContent=errMsg;
       $('l-btn').disabled=false;$('l-btn').textContent='🔫 WCHODZĘ';
     }
   }catch(ex){
-    $('aerr-l').textContent='Brak połączenia. Spróbuj ponownie.';
+    $('aerr-l').textContent='Brak połączenia. Sprawdź internet i spróbuj ponownie.';
     $('l-btn').disabled=false;$('l-btn').textContent='🔫 WCHODZĘ';
   }
 }
