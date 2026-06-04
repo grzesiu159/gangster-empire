@@ -393,6 +393,40 @@ html,body{height:100%;height:-webkit-fill-available;max-height:100%;background:v
 .eq-item-badge{position:absolute;top:3px;right:3px;background:var(--cyan);color:#000;font-size:.42rem;font-weight:900;padding:1px 4px;border-radius:3px}
 .eq-cat-lbl{font-size:.6rem;font-weight:800;color:var(--purple);letter-spacing:.5px;text-transform:uppercase;margin:8px 0 4px;padding-left:2px}
 
+
+/* ══ WIADOMOŚCI ══ */
+.msg-compose{background:rgba(14,0,24,.9);border:1px solid var(--b2);border-radius:var(--r);padding:12px;margin-bottom:10px}
+.msg-thread{background:rgba(14,0,24,.85);border:1px solid var(--b1);border-radius:var(--r);margin-bottom:8px;overflow:hidden}
+.msg-thread-hdr{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer}
+.msg-thread-av{width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid var(--b2);flex-shrink:0}
+.msg-thread-info{flex:1;min-width:0}
+.msg-thread-nm{font-size:.78rem;font-weight:800;color:var(--w)}
+.msg-thread-prev{font-size:.62rem;color:var(--dim2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.msg-thread-meta{text-align:right;flex-shrink:0}
+.msg-thread-time{font-size:.52rem;color:var(--dim)}
+.msg-unread{background:var(--red2);color:#fff;font-size:.5rem;font-weight:900;padding:2px 5px;border-radius:99px;display:inline-block;margin-top:2px}
+.msg-body{display:none;border-top:1px solid var(--b1);padding:10px 12px;max-height:220px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.msg-body.open{display:block}
+.msg-bubble{margin-bottom:8px;display:flex;flex-direction:column}
+.msg-bubble.me{align-items:flex-end}
+.msg-bubble.other{align-items:flex-start}
+.msg-text{max-width:80%;background:var(--s2);border-radius:10px;padding:7px 10px;font-size:.74rem;line-height:1.4}
+.msg-bubble.me .msg-text{background:rgba(160,80,255,.25);border:1px solid rgba(160,80,255,.3)}
+.msg-bubble.other .msg-text{border:1px solid var(--b1)}
+.msg-ts{font-size:.48rem;color:var(--dim);margin-top:2px}
+.msg-reply-row{display:flex;gap:6px;padding:8px 12px;border-top:1px solid var(--b1);background:var(--s1)}
+/* ══ ULEPSZENIA EKIPY ══ */
+.gang-upg-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+.gang-upg{background:rgba(14,0,24,.9);border:1px solid var(--b1);border-radius:var(--r);padding:10px;text-align:center;position:relative;overflow:hidden}
+.gang-upg.maxed{border-color:var(--gold);background:rgba(245,200,66,.06)}
+.gang-upg-ico{font-size:1.6rem;margin-bottom:4px}
+.gang-upg-nm{font-size:.65rem;font-weight:800;color:var(--w)}
+.gang-upg-desc{font-size:.55rem;color:var(--cyan);margin:3px 0}
+.gang-upg-lv{display:flex;gap:4px;justify-content:center;margin:5px 0}
+.gang-upg-pip{width:12px;height:4px;border-radius:2px;background:var(--b1)}
+.gang-upg-pip.on{background:var(--gold)}
+.gang-upg-cost{font-size:.58rem;color:var(--dim2);margin-bottom:5px}
+
 /* ══ SHOP ══ */
 .shop-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .shop-item{background:rgba(14,0,24,.9);border:1px solid var(--b1);border-radius:var(--r);padding:10px 9px;cursor:pointer;transition:all .18s;position:relative;overflow:hidden}
@@ -628,6 +662,12 @@ html,body{height:100%;height:-webkit-fill-available;max-height:100%;background:v
       <div id="equip-content"></div>
     </div>
 
+    <!-- WIADOMOŚCI -->
+    <div class="page" id="pg-msgs">
+      <div class="stit">💬 Wiadomości</div>
+      <div id="msgs-content"></div>
+    </div>
+
     <!-- RANKING -->
     <div class="page" id="pg-ranking">
       <div class="stit">🏆 Ranking gangsterów</div>
@@ -668,6 +708,7 @@ html,body{height:100%;height:-webkit-fill-available;max-height:100%;background:v
     <button class="nb"    id="nb-gang"     onclick="goPage('gang')"><span class="nb-i">👥</span><span class="nb-l">Ekipa</span></button>
     <button class="nb"    id="nb-shop"     onclick="goPage('shop')"><span class="nb-i">🛒</span><span class="nb-l">Sklep</span></button>
     <button class="nb"    id="nb-equip"    onclick="goPage('equip')"><span class="nb-i">🎒</span><span class="nb-l">Ekwipunek</span></button>
+    <button class="nb"    id="nb-msgs"     onclick="goPage('msgs')"><span class="nb-i">💬</span><span class="nb-l">Wiadom.</span><span class="nb-bdg" id="msgs-bdg" style="display:none"></span></button>
     <button class="nb"    id="nb-ranking"  onclick="goPage('ranking')"><span class="nb-i">🏆</span><span class="nb-l">Ranking</span></button>
   </div>
 </div>
@@ -887,6 +928,7 @@ function launchGame(){
   // Use setTimeout(0) to ensure full script is parsed before renders run
   setTimeout(()=>{
     const renders=[renderHUD,renderChar,renderCity,renderRegions,renderMissions,renderEnemies,renderBattleHist,renderGang,renderShop,renderEquip];
+    setTimeout(()=>{try{checkInvites();}catch(e){}},3000); // sprawdź zaproszenia po 3s
     renders.forEach(fn=>{try{fn();}catch(e){console.warn('render error',fn.name,e);}});
     try{startEnergyTick();}catch(e){}
     try{checkAchs();}catch(e){}
@@ -905,6 +947,7 @@ function hydrate(p){
   p._gangId=loc.gangId||null;
   p._gangName=loc.gangName||null;
   p._gangMembers=loc.gangMembers||[];
+  p._gangUpg=loc.gangUpg||{};
   p._activity=loc.activity||[];
   p._gender=loc.gender||'m';
   p._bld5=Object.values(p._blds).filter(l=>l>=5).length;
@@ -919,6 +962,8 @@ function hydrate(p){
   if(loc.level!==undefined)p.level=loc.level;
   if(loc.energy!==undefined)p.energy=loc.energy;
   if(loc.max_energy!==undefined)p.max_energy=loc.max_energy;
+  if(!p.max_energy||p.max_energy<30)p.max_energy=30; // min 30 energii
+  if(!p.energy||p.energy<1)p.energy=Math.min(p.max_energy,30); // start z 30
   if(loc.health!==undefined)p.health=loc.health;
   if(loc.max_health!==undefined)p.max_health=loc.max_health;
   if(loc.attack!==undefined)p.attack=loc.attack;
@@ -944,7 +989,7 @@ function persist(){
   localStorage.setItem('ge_loc_'+P.id,JSON.stringify({
     blds:P._blds,lastCol:P._lastCol,actM:P._actM,bh:P._bh.slice(-25),
     achs:P._achs,daily:P._daily,ownedR:P._ownedR,gangId:P._gangId,
-    gangName:P._gangName,gangMembers:P._gangMembers,activity:P._activity.slice(-15),
+    gangName:P._gangName,gangMembers:P._gangMembers,gangUpg:P._gangUpg||{},activity:P._activity.slice(-15),
     gender:P._gender,shopItems:P._shopItems||[],shopAtk:P._shopAtk||0,shopDef:P._shopDef||0,shopXpb:P._shopXpb||0,
     spAtk:P._spAtk||0,spDef:P._spDef||0,spHp:P._spHp||0,spEn:P._spEn||0,spXp:P._spXp||0,
     equip:P._equip||{},
@@ -1042,6 +1087,7 @@ function goPage(pg){
   if(pg==='char')renderChar();
   if(pg==='shop'){_shopCache=null;renderShop();}
   if(pg==='equip'){renderEquip();}
+  if(pg==='msgs'){renderMsgs();}
   if(pg==='gang')renderGang();
 }
 
@@ -1068,11 +1114,15 @@ function renderHUD(){
 }
 function startEnergyTick(){
   clearInterval(enTimer);
+  // +10 energii co 3 minuty = +1 co 18 sekund, tick co 5s
   enTimer=setInterval(()=>{
     if(!P)return;
-    if(P.energy<P.max_energy)P.energy=Math.min(P.max_energy,(P.energy||0)+1/6);
-    renderHUD();
-  },10000);
+    const maxEn=P.max_energy||30;
+    if(P.energy<maxEn){
+      P.energy=Math.min(maxEn,(P.energy||0)+(10/180)); // 10 en / 180 sekund
+      renderHUD();
+    }
+  },5000);
 }
 
 // ════════════════════════════════════════════════════════
@@ -1501,8 +1551,8 @@ function renderBattleHist(){
       </div>`).join('')
     :'<div class="empty"><span class="empty-i">⚔️</span><div style="font-size:.78rem">Brak walk</div></div>';
 }
-function getMyAtk(){return(P.attack||10)+(P._blds?.armory||0)*6+(P._blds?.intel||0)*3+(P.level||1)*3+(P._spAtk||0)*3+(P._shopAtk||0);}
-function getMyDef(){return(P.defense||10)+(P._blds?.gym||0)*6+(P.level||1)*2+(P._spDef||0)*3+(P._shopDef||0);}
+function getMyAtk(){return(P.attack||10)+(P._blds?.armory||0)*6+(P._blds?.intel||0)*3+(P.level||1)*3+(P._spAtk||0)*3+(P._shopAtk||0)+(getGangAtkBonus?getGangAtkBonus():0);}
+function getMyDef(){return(P.defense||10)+(P._blds?.gym||0)*6+(P.level||1)*2+(P._spDef||0)*3+(P._shopDef||0)+(getGangDefBonus?getGangDefBonus():0);}
 function openFight(eid){
   const e=ENEMIES_DEF.find(x=>x.id===eid);if(!e)return;
   if(P.level<e.minLvl){toast(`Potrzebujesz Lv.${e.minLvl}!`,'er');return;}
@@ -1570,13 +1620,16 @@ async function doBattle(eid){
     const myA2=myATK+Math.random()*14,eDef2=e.def+Math.random()*10;
     const eA2=e.atk+Math.random()*12,myD2=myDEF+Math.random()*10;
     const ph=Math.max(1,Math.floor(myA2*(0.5+Math.random()*.9)-eDef2*(0.2+Math.random()*.5)));
-    const eh=Math.max(1,Math.floor(eA2*(0.5+Math.random()*.9)-myD2*(0.2+Math.random()*.5)));
     const crit=Math.random()>0.82;
     const myAtk2=ATKANIS[Math.floor(Math.random()*ATKANIS.length)];
-    eHP=Math.max(0,eHP-(crit?ph*2:ph)); myHP=Math.max(0,myHP-eh);
+    eHP=Math.max(0,eHP-(crit?ph*2:ph));
+    // Jeśli enemy martwy - nie zadaje ataku (fix buga!)
+    const eh=eHP<=0?0:Math.max(1,Math.floor(eA2*(0.5+Math.random()*.9)-myD2*(0.2+Math.random()*.5)));
+    if(eHP>0)myHP=Math.max(0,myHP-eh);
     roundData.push({ph,eh,crit,myAtk2,myHP,eHP,myHPmax,eHPmax});
+    if(eHP<=0||myHP<=0)break; // zatrzymaj walkę gdy ktoś umrze
   }
-  const won=eHP<=0||(myHP>eHP);
+  const won=eHP<=0;
   openMdl(`
     <div class="mh"><h3>⚔️ Walka z ${e.name}</h3><button class="mcl" onclick="closeMdl()">✕</button></div>
     <div class="mbody" style="padding:12px">
@@ -1646,7 +1699,7 @@ async function doBattle(eid){
   await sleep(500);
   let mo=0,re=0;
   if(won){
-    mo=Math.floor(e.steal*(0.25+Math.random()*.55));re=e.rep;
+    mo=Math.floor(e.steal*(0.82+Math.random()*.12));re=e.rep; // narrow range: ±6% steal
     P.money+=mo;P.respect+=re;P.wins=(P.wins||0)+1;
     addXP(50+e.lvl*10);addActivity('🏆',`Pokonano ${e.name} (+${fmt(mo)}💰)`);
   }else{
@@ -1721,12 +1774,15 @@ function renderGang(){
       <button class="war-btn" onclick="openGangWar()">⚔️ Zaatakuj</button>
     </div>
     <div class="divider"></div>
+    <div class="stit">⬆️ Ulepszenia Ekipy</div>
+    ${renderGangUpgrades()}
+    <div class="divider"></div>
     <div class="stit">➕ Zaproś do ekipy</div>
     <div class="card" style="margin-bottom:8px">
-      <div style="font-size:.72rem;color:var(--dim2);margin-bottom:10px">Podaj nick gracza aby zaprosić go do ekipy</div>
+      <div style="font-size:.72rem;color:var(--dim2);margin-bottom:10px">Podaj nick gracza — dostanie zaproszenie w grze!</div>
       <div style="display:flex;gap:8px">
         <input class="fi" id="inv-nick" placeholder="Nick gracza..." style="flex:1">
-        <button class="btn btn-p btn-sm" onclick="inviteMember()">➕ Zaproś</button>
+        <button class="btn btn-p btn-sm" onclick="inviteMember()">📨 Zaproś</button>
       </div>
     </div>
     <button class="btn btn-d btn-w" style="margin-bottom:10px" onclick="leaveGang()">🚪 Opuść ekipę</button>`;
@@ -1794,14 +1850,54 @@ function leaveGang(){
   persist();renderGang();
   toast(`🚪 Opuściłeś "${n}"`,'if');
 }
-function inviteMember(){
-  const nick=$('inv-nick').value.trim();
-  if(!nick){toast('Podaj nick!','er');return;}
-  if(!P._gangMembers)P._gangMembers=[];
-  if(P._gangMembers.find(m=>m.name===nick)){toast('Już jest w ekipie!','er');return;}
-  P._gangMembers.push({name:nick,level:Math.ceil(Math.random()*10)+1,respect:Math.floor(Math.random()*500),gender:Math.random()>0.5?'m':'f'});
+async function inviteMember(){
+  const nick=$('inv-nick')?.value.trim();
+  if(!nick){toast('Podaj nick gracza!','er');return;}
+  if(!P._gangId){toast('Nie masz ekipy!','er');return;}
+  toast('🔍 Szukam gracza...','if');
+  try{
+    const r=await callGame('send_invite',{to_username:nick,gang_name:P._gangName,gang_id:P._gangId});
+    if(r&&r.ok){
+      toast(`📨 Zaproszenie wysłane do ${nick}!`,'gd');
+      addActivity('👥',`Zaproszono ${nick} do ekipy ${P._gangName}`);
+    }else{
+      toast(r?.error||'Nie znaleziono gracza o tym nicku!','er');
+    }
+  }catch(e){toast('Błąd połączenia!','er');}
+}
+async function checkInvites(){
+  if(!P)return;
+  try{
+    const r=await callGame('get_invites',{});
+    if(r&&r.ok&&r.invites&&r.invites.length>0){
+      r.invites.forEach(inv=>{
+        openMdl(`<div class="mh"><h3>📨 Zaproszenie do ekipy</h3><button class="mcl" onclick="closeMdl()">✕</button></div>
+        <div class="mbody" style="text-align:center;padding:20px">
+          <div style="font-size:2.5rem;margin-bottom:10px">👥</div>
+          <div style="font-size:.9rem;font-weight:900;color:var(--gold);margin-bottom:6px">${inv.gang_name}</div>
+          <div style="font-size:.76rem;color:var(--dim2)">Gracz <b>${inv.from_username}</b> zaprasza Cię do swojej ekipy!</div>
+        </div>
+        <div class="mfoot">
+          <button class="btn btn-s btn-sm" onclick="declineInvite('${inv.id}')">❌ Odrzuć</button>
+          <button class="btn btn-g" onclick="acceptInvite('${inv.id}','${inv.gang_id}','${inv.gang_name}','${inv.from_username}')">✅ Dołącz!</button>
+        </div>`);
+      });
+    }
+  }catch(e){}
+}
+async function acceptInvite(invId,gangId,gangName,fromUser){
+  closeMdl();
+  P._gangId=gangId;P._gangName=gangName;P._gangMembers=[];
   persist();renderGang();
-  toast(`✅ ${nick} dołączył do ekipy!`,'gd');
+  toast(`✅ Dołączyłeś do ekipy ${gangName}!`,'gd');
+  addActivity('👥',`Dołączono do ekipy: ${gangName}`);
+  try{await callGame('respond_invite',{invite_id:invId,accept:true});}catch(e){}
+  checkAchs();
+}
+async function declineInvite(invId){
+  closeMdl();
+  try{await callGame('respond_invite',{invite_id:invId,accept:false});}catch(e){}
+  toast('Zaproszenie odrzucone','if');
 }
 function kickMember(name){
   P._gangMembers=(P._gangMembers||[]).filter(m=>m.name!==name);
@@ -1994,25 +2090,191 @@ function startGangWar(enemy){ openGangWar(); }
 // ════════════════════════════════════════════════════════
 // RANKING
 // ════════════════════════════════════════════════════════
+
+// ════════════════════════════════════════════════════════
+// WIADOMOŚCI
+// ════════════════════════════════════════════════════════
+const _msgCache={threads:[],loaded:false};
+async function renderMsgs(){
+  if(!P)return;
+  const mc=$('msgs-content');if(!mc)return;
+  mc.innerHTML=`<div class="msg-compose card">
+    <div style="font-size:.72rem;font-weight:800;color:var(--w);margin-bottom:8px">✉️ Wyślij wiadomość</div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <input class="fi" id="msg-to" placeholder="Nick odbiorcy...">
+      <textarea class="fi" id="msg-body" placeholder="Treść wiadomości..." style="resize:none;height:60px;font-size:14px"></textarea>
+      <button class="btn btn-p" onclick="sendMsg()">📤 Wyślij</button>
+    </div>
+  </div>
+  <div style="font-size:.7rem;font-weight:800;color:var(--dim2);margin-bottom:6px">📥 Skrzynka odbiorcza</div>
+  <div id="msg-threads"><div class="empty"><span style="animation:spin 1s linear infinite;display:inline-block">⏳</span></div></div>`;
+  // Załaduj wiadomości z backendu
+  try{
+    const r=await callGame('get_messages',{});
+    if(r&&r.ok&&r.messages){
+      _msgCache.threads=r.messages;_msgCache.loaded=true;
+      renderMsgThreads(r.messages);
+      // Odznacz badge
+      const nb=$('msgs-bdg');if(nb)nb.style.display='none';
+    }else{
+      $('msg-threads').innerHTML='<div class="empty"><span class="empty-i">💬</span><div style="font-size:.76rem">Brak wiadomości</div></div>';
+    }
+  }catch(e){
+    $('msg-threads').innerHTML='<div class="empty"><span class="empty-i">⚠️</span><div style="font-size:.72rem">Błąd ładowania</div></div>';
+  }
+}
+function renderMsgThreads(messages){
+  const mt=$('msg-threads');if(!mt)return;
+  if(!messages||messages.length===0){mt.innerHTML='<div class="empty"><span class="empty-i">💬</span><div style="font-size:.76rem">Brak wiadomości</div></div>';return;}
+  // Grupuj wg rozmówcy
+  const threads={};
+  messages.forEach(m=>{
+    const other=m.from_id===P.id?m.to_username:m.from_username;
+    const otherId=m.from_id===P.id?m.to_id:m.from_id;
+    if(!threads[otherId])threads[otherId]={other,otherId,msgs:[],unread:0};
+    threads[otherId].msgs.push(m);
+    if(!m.read&&m.to_id===P.id)threads[otherId].unread++;
+  });
+  mt.innerHTML=Object.values(threads).map(t=>`
+    <div class="msg-thread">
+      <div class="msg-thread-hdr" onclick="toggleThread('th-${t.otherId}','${t.otherId}')">
+        <img class="msg-thread-av" src="${IMG.male}" alt="">
+        <div class="msg-thread-info">
+          <div class="msg-thread-nm">${t.other}</div>
+          <div class="msg-thread-prev">${t.msgs[t.msgs.length-1]?.body||''}</div>
+        </div>
+        <div class="msg-thread-meta">
+          ${t.unread>0?`<span class="msg-unread">${t.unread} nowe</span>`:''}
+        </div>
+      </div>
+      <div class="msg-body" id="th-${t.otherId}">
+        ${t.msgs.map(m=>`<div class="msg-bubble ${m.from_id===P.id?'me':'other'}">
+          <div class="msg-text">${m.body}</div>
+          <div class="msg-ts">${new Date(m.created_at||m.created_date).toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'})}</div>
+        </div>`).join('')}
+        <div class="msg-reply-row">
+          <input class="fi" id="reply-${t.otherId}" placeholder="Odpowiedź..." style="flex:1;font-size:13px;padding:7px 10px">
+          <button class="btn btn-p btn-sm" onclick="sendReply('${t.otherId}','${t.other}')">Wyślij</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+function toggleThread(elId,userId){
+  const el=$(elId);if(!el)return;
+  const isOpen=el.classList.contains('open');
+  document.querySelectorAll('.msg-body').forEach(x=>x.classList.remove('open'));
+  if(!isOpen){el.classList.add('open');el.scrollTop=el.scrollHeight;}
+}
+async function sendMsg(){
+  const to=$('msg-to')?.value.trim();
+  const body=$('msg-body')?.value.trim();
+  if(!to||!body){toast('Podaj odbiorcę i treść!','er');return;}
+  toast('📤 Wysyłam...','if');
+  try{
+    const r=await callGame('send_message',{to_username:to,body});
+    if(r&&r.ok){toast(`✅ Wysłano do ${to}!`,'gd');$('msg-body').value='';$('msg-to').value='';renderMsgs();}
+    else toast(r?.error||'Nie znaleziono gracza!','er');
+  }catch(e){toast('Błąd wysyłania!','er');}
+}
+async function sendReply(toId,toName){
+  const inp=$('reply-'+toId);if(!inp)return;
+  const body=inp.value.trim();if(!body)return;
+  try{
+    const r=await callGame('send_message',{to_id:toId,to_username:toName,body});
+    if(r&&r.ok){inp.value='';renderMsgs();}
+    else toast(r?.error||'Błąd!','er');
+  }catch(e){toast('Błąd!','er');}
+}
+
+// ════════════════════════════════════════════════════════
+// ULEPSZENIA EKIPY
+// ════════════════════════════════════════════════════════
+const GANG_UPGRADES=[
+  {id:'gu_xp',   ico:'✨', name:'Bonus XP',        desc:'Więcej XP z misji',        maxLvl:5, bonusPerLvl:5,  unit:'%XP',   costs:[2000,5000,10000,20000,40000]},
+  {id:'gu_money',ico:'💰', name:'Kasa Ekipy',       desc:'Więcej kasy z walk',       maxLvl:5, bonusPerLvl:5,  unit:'%💰',   costs:[3000,7000,15000,30000,60000]},
+  {id:'gu_energy',ico:'⚡',name:'Boost Energii',     desc:'Szybsza regen energii',    maxLvl:3, bonusPerLvl:1,  unit:'en/3m', costs:[5000,15000,35000]},
+  {id:'gu_def',  ico:'🛡️', name:'Tarcza Ekipy',     desc:'Bonus do obrony',          maxLvl:5, bonusPerLvl:5,  unit:'DEF',   costs:[4000,10000,20000,40000,80000]},
+  {id:'gu_atk',  ico:'⚔️', name:'Siła Ekipy',       desc:'Bonus do ataku',           maxLvl:5, bonusPerLvl:5,  unit:'ATK',   costs:[4000,10000,20000,40000,80000]},
+  {id:'gu_miss', ico:'📋', name:'Specjaliści',       desc:'Czas misji -10% per lvl',  maxLvl:3, bonusPerLvl:10, unit:'%czas', costs:[8000,20000,50000]},
+];
+function getGangUpgLevel(id){return(P._gangUpg||{})[id]||0;}
+function getGangXpBonus(){
+  const xpUpg=getGangUpgLevel('gu_xp');
+  return xpUpg*5; // 5%/10%/15%/20%/25% XP bonus
+}
+function getGangAtkBonus(){return getGangUpgLevel('gu_atk')*5;}
+function getGangDefBonus(){return getGangUpgLevel('gu_def')*5;}
+function renderGangUpgrades(){
+  if(!P||!P._gangId)return'<div style="color:var(--dim);font-size:.74rem;text-align:center;padding:10px">Musisz być w ekipie aby ulepszać!</div>';
+  const upg=P._gangUpg||{};
+  let html='<div class="gang-upg-grid">';
+  GANG_UPGRADES.forEach(u=>{
+    const lv=upg[u.id]||0;
+    const maxed=lv>=u.maxLvl;
+    const cost=maxed?0:u.costs[lv];
+    const bonus=lv*u.bonusPerLvl;
+    html+=`<div class="gang-upg ${maxed?'maxed':''}">
+      <div class="gang-upg-ico">${u.ico}</div>
+      <div class="gang-upg-nm">${u.name}</div>
+      <div class="gang-upg-desc">${bonus>0?'+'+bonus+' '+u.unit:u.desc}</div>
+      <div class="gang-upg-lv">${Array.from({length:u.maxLvl},(_,i)=>`<div class="gang-upg-pip ${i<lv?'on':''}"></div>`).join('')}</div>
+      ${maxed
+        ?'<span class="pill g" style="font-size:.54rem">MAX ✅</span>'
+        :`<div class="gang-upg-cost">Koszt: <span style="color:var(--gold)">${fmt(cost)}💰</span></div>
+          <button class="btn btn-p btn-sm" style="width:100%" ${P.money<cost?'disabled':''} onclick="buyGangUpg('${u.id}',${cost})">Ulepsz</button>`}
+    </div>`;
+  });
+  html+='</div>';
+  return html;
+}
+function buyGangUpg(id,cost){
+  if(P.money<cost){toast('Za mało kasy!','er');return;}
+  const u=GANG_UPGRADES.find(x=>x.id===id);if(!u)return;
+  if(!P._gangUpg)P._gangUpg={};
+  const lv=(P._gangUpg[id]||0);
+  if(lv>=u.maxLvl){toast('Już na MAX!','er');return;}
+  P.money-=cost;
+  P._gangUpg[id]=lv+1;
+  persist();renderHUD();renderGang();
+  toast(`✅ ${u.name} ulepszone do Lv.${lv+1}!`,'gd');
+  addActivity('⬆️',`Ulepszono ${u.ico} ${u.name} do Lv.${lv+1}`);
+}
+
 async function renderRanking(){
-  $('rank-list').innerHTML='<div class="empty"><span class="empty-i" style="animation:spin 1s linear infinite;display:inline-block">⏳</span></div>';
-  const r=await callGame('get_ranking',{});
-  let pls=r.ok&&r.players?r.players:[];
-  if(!pls.find(p=>p.id===P?.id))pls.push(P);
+  $('rank-list').innerHTML='<div class="empty"><span class="empty-i" style="animation:spin 1s linear infinite;display:inline-block">⏳</span><div style="font-size:.7rem;margin-top:6px">Ładuję ranking...</div></div>';
+  let pls=[];
+  try{
+    const r=await callGame('get_leaderboard',{});
+    if(r&&r.ok){
+      pls=r.leaderboard||r.players||[];
+    }
+  }catch(e){console.warn('ranking fetch failed',e);}
+  // Zawsze dodaj aktualnego gracza jeśli nie ma go na liście
+  if(P&&!pls.find(p=>p.id===P.id)){pls.push({...P,_local:true});}
+  if(pls.length===0){$('rank-list').innerHTML='<div class="empty"><span class="empty-i">🏆</span><div style="font-size:.76rem">Brak graczy. Bądź pierwszy!</div></div>';return;}
   pls.sort((a,b)=>(b.respect||0)-(a.respect||0));
   const medals=['🥇','🥈','🥉'];
-  $('rank-list').innerHTML=pls.slice(0,20).map((pl,i)=>{
+  const myPos=pls.findIndex(p=>p.id===P?.id);
+  let html=`<div style="font-size:.6rem;color:var(--dim2);text-align:center;margin-bottom:8px">🌐 ${pls.length} graczy · Twoja pozycja: #${myPos>=0?myPos+1:'?'}</div>`;
+  html+=pls.slice(0,25).map((pl,i)=>{
     const me=pl.id===P?.id;
+    const gender=pl.gender||pl._gender||'m';
+    const av=me?portImg():(gender==='f'?IMG.female:IMG.male);
+    const title=TITLES[Math.min((pl.level||1)-1,TITLES.length-1)];
     return`<div class="rk-card ${me?'me':''}">
-      <div class="rk-n">${medals[i]||i+1}</div>
-      <img class="rk-av" src="${pl.id===P?.id?portImg():IMG.male}" alt="">
+      <div class="rk-n" style="font-size:${i<3?'1.1rem':'.75rem'}">${medals[i]||('#'+(i+1))}</div>
+      <img class="rk-av" src="${av}" alt="">
       <div class="rk-info">
-        <div class="rk-nm">${pl.username||'???'}${me?' 👈':''}</div>
-        <div class="rk-dt">Lv.${pl.level||1} · ${TITLES[Math.min((pl.level||1)-1,TITLES.length-1)]} · 🏆${pl.wins||0}W</div>
+        <div class="rk-nm">${pl.username||'Gracz'}${me?'  <span style="color:var(--cyan);font-size:.55rem">TY</span>':''}</div>
+        <div class="rk-dt">Lv.${pl.level||1} · ${title} · 🏆${pl.wins||0}W/${pl.losses||0}L</div>
       </div>
-      <div class="rk-sc">⭐${fmt(pl.respect||0)}</div>
+      <div class="rk-sc" style="text-align:right">
+        <div style="color:var(--gold);font-weight:800">⭐${fmt(pl.respect||0)}</div>
+        <div style="font-size:.54rem;color:var(--dim2)">💰${fmt(pl.money||0)}</div>
+      </div>
     </div>`;
-  }).join('')||'<div class="empty"><span class="empty-i">🏆</span><div>Brak danych</div></div>';
+  }).join('');
+  $('rank-list').innerHTML=html;
 }
 
 // ════════════════════════════════════════════════════════
@@ -2066,10 +2328,13 @@ function claimDaily(){
 // XP / LEVELS
 // ════════════════════════════════════════════════════════
 function addXP(amt){
+  // Bonus XP z ulepszenia ekipy
+  const gangXpBonus=(typeof getGangXpBonus==='function')?getGangXpBonus():0;
+  if(gangXpBonus>0)amt=Math.floor(amt*(1+gangXpBonus/100));
   P.experience=(P.experience||0)+amt;
   while(P.experience>=xpNeed(P.level)){
     P.experience-=xpNeed(P.level);P.level++;
-    P.max_energy=Math.min(50,10+Math.floor(P.level*1.5));
+    P.max_energy=Math.min(60,30+Math.floor(P.level*0.5)); // start od 30, max 60
     toast(`🎉 LEVEL UP! Lv.${P.level} — ${TITLES[Math.min(P.level-1,TITLES.length-1)]}!`,'gd');
     addActivity('🎉',`Awans na poziom ${P.level}!`);
   }
