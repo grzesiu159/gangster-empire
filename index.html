@@ -924,14 +924,14 @@ function showAuth(){
   // Ping serwer w tle - pokaż status
   setTimeout(async()=>{
     try{
-      const r=await fetchTo(AUTH_URL,{action:'ping'},8000);
+      const r=await fetchTo(AUTH_URL,{action:'ping'},15000);
       if(r&&(r.ok||r.error==='Unknown action')){
         try{$('srv-status').textContent='🟢 Serwer online';$('srv-status').style.color='#4caf50';}catch(e){}
       }else{
         try{$('srv-status').textContent='🔴 Serwer niedostępny';$('srv-status').style.color='#f44336';}catch(e){}
       }
     }catch(e){
-      try{$('srv-status').textContent='🔴 Brak połączenia';$('srv-status').style.color='#f44336';}catch(ex){}
+      try{$('srv-status').textContent='⚠️ Wolne połączenie';$('srv-status').style.color='#ff9800';}catch(ex){}
     }
   },500);
 }
@@ -1024,7 +1024,6 @@ async function fetchTo(url,body,ms=25000){
     const r=await fetch(url,{
       method:'POST',
       mode:'cors',
-      credentials:'omit',
       headers:{'Content-Type':'application/json','x-base44-app-id':APP_ID},
       body:JSON.stringify(body),
       signal:ctrl.signal
