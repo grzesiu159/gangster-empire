@@ -504,7 +504,7 @@ html,body{height:100%;height:-webkit-fill-available;max-height:100%;background:v
 
 <!-- AUTH -->
 <div class="screen" id="s-auth">
-  <div class="auth-logo"><h1>GANGSTER<br>EMPIRE</h1><p>Rule the streets · Own the city</p><div id="srv-status" style="font-size:.55rem;margin-top:5px;color:#888">⏳ łączę z serwerem...</div></div>
+  <div class="auth-logo"><h1>GANGSTER<br>EMPIRE</h1><p>Rule the streets · Own the city</p></div>
   <div class="auth-box">
     <div class="auth-tabs">
       <div class="atab on" id="at-l" onclick="swAuth('l')">Zaloguj się</div>
@@ -921,30 +921,7 @@ function showAuth(){
     try{$('s-load').classList.remove('on');}catch(e){}
     try{$('s-auth').classList.add('on');}catch(e){}
   });
-  // Ping serwer w tle - pokaż status
-  // Ping w tle - nie blokuje logowania
-  setTimeout(async()=>{
-    try{
-      const ctrl=new AbortController();
-      setTimeout(()=>ctrl.abort(),8000);
-      const r=await fetch(AUTH_URL,{
-        method:'POST',
-        headers:{'Content-Type':'application/json','x-base44-app-id':APP_ID},
-        body:JSON.stringify({action:'ping'}),
-        signal:ctrl.signal,
-        cache:'no-store'
-      });
-      const json=await r.json().catch(()=>({}));
-      if(json&&(json.ok||json.error==='Unknown action')){
-        try{$('srv-status').textContent='🟢 Serwer online';$('srv-status').style.color='#4caf50';}catch(e){}
-      }else{
-        try{$('srv-status').textContent='⚠️ Łączę...';$('srv-status').style.color='#ff9800';}catch(e){}
-      }
-    }catch(e){
-      // Nie pokazuj błędu - może to tylko cold start
-      try{$('srv-status').textContent='⚠️ Wolne łącze...';$('srv-status').style.color='#ff9800';}catch(ex){}
-    }
-  },1000);
+
 }
 function launchGame(){
   try{$('s-load').classList.remove('on');}catch(e){}
