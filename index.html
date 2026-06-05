@@ -922,18 +922,29 @@ function showAuth(){
     try{$('s-auth').classList.add('on');}catch(e){}
   });
   // Ping serwer w tle - pokaż status
+  // Ping w tle - nie blokuje logowania
   setTimeout(async()=>{
     try{
-      const r=await fetchTo(AUTH_URL,{action:'ping'},15000);
-      if(r&&(r.ok||r.error==='Unknown action')){
+      const ctrl=new AbortController();
+      setTimeout(()=>ctrl.abort(),8000);
+      const r=await fetch(AUTH_URL,{
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-base44-app-id':APP_ID},
+        body:JSON.stringify({action:'ping'}),
+        signal:ctrl.signal,
+        cache:'no-store'
+      });
+      const json=await r.json().catch(()=>({}));
+      if(json&&(json.ok||json.error==='Unknown action')){
         try{$('srv-status').textContent='🟢 Serwer online';$('srv-status').style.color='#4caf50';}catch(e){}
       }else{
-        try{$('srv-status').textContent='🔴 Serwer niedostępny';$('srv-status').style.color='#f44336';}catch(e){}
+        try{$('srv-status').textContent='⚠️ Łączę...';$('srv-status').style.color='#ff9800';}catch(e){}
       }
     }catch(e){
-      try{$('srv-status').textContent='⚠️ Wolne połączenie';$('srv-status').style.color='#ff9800';}catch(ex){}
+      // Nie pokazuj błędu - może to tylko cold start
+      try{$('srv-status').textContent='⚠️ Wolne łącze...';$('srv-status').style.color='#ff9800';}catch(ex){}
     }
-  },500);
+  },1000);
 }
 function launchGame(){
   try{$('s-load').classList.remove('on');}catch(e){}
@@ -1023,10 +1034,10 @@ async function fetchTo(url,body,ms=25000){
   try{
     const r=await fetch(url,{
       method:'POST',
-      mode:'cors',
       headers:{'Content-Type':'application/json','x-base44-app-id':APP_ID},
       body:JSON.stringify(body),
-      signal:ctrl.signal
+      signal:ctrl.signal,
+      cache:'no-store'
     });
     clearTimeout(t);
     if(!r.ok&&r.status>=500){return{ok:false,error:'Błąd serwera ('+r.status+')'};}
